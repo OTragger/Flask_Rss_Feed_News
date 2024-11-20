@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="get" class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            <i class="fas fa-tags me-2"></i>Thème
+                        </label>
+                        <select name="theme" class="form-select">
+                            <option value="">Tous les thèmes</option>
+                            {% for theme in themes %}
+                            <option value="{{ theme[0] }}" {% if request.args.get('theme')==theme[0] %}selected{% endif %}>
+                                {{ theme[0] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            <i class="fas fa-calendar me-2"></i>Date
+                        </label>
+                        <input type="date" name="date" class="form-control" value="{{ request.args.get('date', '') }}">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-filter me-2"></i>Filtrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% for article in articles %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm hover-card">
+            {% if article.image_url %}
+            <div class="card-img-wrapper">
+                <img src="{{ article.image_url }}" 
+                     class="card-img-top article-image" 
+                     alt="{{ article.title }}"
+                     onerror="this.src='/static/images/default-article.jpg'">
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <div class="metadata mb-3">
+                    <span class="badge bg-primary me-2">
+                        <i class="fas fa-newspaper me-1"></i>{{ article.source }}
+                    </span>
+                    <span class="badge bg-secondary me-2">
+                        <i class="fas fa-calendar me-1"></i>{{ article.date.strftime('%d/%m/%Y') }}
+                    </span>
+                    <span class="badge bg-info">
+                        <i class="fas fa-tag me-1"></i>{{ article.theme }}
+                    </span>
+                </div>
+                <p class="card-text">{{ article.content[:200] }}...</p>
+                {% if article.url %}
+                <a href="{{ article.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-external-link-alt me-1"></i>Lire plus
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if pagination.pages > 1 %}
+<nav aria-label="Navigation des pages" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% for page in pagination.iter_pages() %}
+            {% if page %}
+                <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('main.index', page=page, theme=request.args.get('theme'), date=request.args.get('date')) }}">
+                        {{ page }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+{% endif %}
+</div>
+
+{% if not articles %}
+<div class="alert alert-info text-center">
+    <i class="fas fa-info-circle me-2"></i>Aucun article trouvé pour ces critères.
+</div>
+{% endif %}
+{% endblock %}

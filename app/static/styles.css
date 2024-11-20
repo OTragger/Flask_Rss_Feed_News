@@ -1,0 +1,125 @@
+/* Styles généraux */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Animation des cartes au survol */
+.hover-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Style des badges */
+.badge {
+    font-weight: normal;
+    padding: 0.5em 0.8em;
+}
+
+/* Style des cartes */
+.card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-title {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* Style du formulaire */
+.form-label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.form-select, .form-control {
+    border-radius: 8px;
+}
+
+.card-img-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* Ratio 16:9 */
+    overflow: hidden;
+}
+.card-img-top {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.article-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card:hover .article-image {
+    transform: scale(1.05);
+}
+
+/* Style du bouton de filtrage */
+.btn-primary {
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+}
+
+/* Style de la barre de navigation */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Style du footer */
+footer {
+    border-top: 1px solid #dee2e6;
+}
+
+/* Responsive design pour les petits écrans */
+@media (max-width: 768px) {
+    .col-md-6 {
+        margin-bottom: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .card-img-wrapper {
+        padding-top: 75%; /* Ratio 4:3 pour les petits écrans */
+    }
+}
+
+/* Animation de chargement des images */
+@keyframes imageFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.article-image {
+    animation: imageFadeIn 0.5s ease-in;
+}
+
+/* Animation de chargement des cartes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out forwards;
+}
